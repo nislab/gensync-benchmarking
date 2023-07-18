@@ -1,24 +1,24 @@
 cmake_minimum_required(VERSION 3.6)
-project(gensync)
+project(cpisync)
 set(CMAKE_CXX_STANDARD 11)
 
 # if compiled with RECORD, GenSync server and client produce extensive log files
 # that can be used to reproduce exact sync behavior afterwards
-add_definitions(-DRECORD=".gensync")
+add_definitions(-DRECORD=".cpisync")
 
 include(CTest)
 include(GNUInstallDirs)
 
 # include Apache Data Sketches as a header-only library
-include_directories(gensync-core/incubator-datasketches-cpp/common/include
-                    gensync-core/incubator-datasketches-cpp/hll/include
-                    gensync-core/incubator-datasketches-cpp/fi/include)
+include_directories(incubator-datasketches-cpp/common/include
+                    incubator-datasketches-cpp/hll/include
+                    incubator-datasketches-cpp/fi/include)
 
 # some flags
 set(CMAKE_CXX_FLAGS "-std=c++11 -DDEFAULT_LOGLEVEL=TEST")
 
 # Set project directory strucuture
-set(SRC_DIR gensync-core/src)
+set(SRC_DIR src)
 set(AUX_DIR ${SRC_DIR}/Aux)
 set(DATA_DIR ${SRC_DIR}/Data)
 set(COMM_DIR ${SRC_DIR}/Communicants)
@@ -26,7 +26,7 @@ set(SYNC_DIR ${SRC_DIR}/Syncs)
 set(BENCH_DIR ${SRC_DIR}/Benchmarks)
 set(TOOLS_DIR ${SRC_DIR}/Tools)
 
-set(INCLUDE gensync-core/include/GenSync)
+set(INCLUDE include/CPISync)
 set(AUX_DIR_INC ${INCLUDE}/Aux)
 set(DATA_DIR_INC ${INCLUDE}/Data)
 set(COMM_DIR_INC ${INCLUDE}/Communicants)
@@ -34,7 +34,7 @@ set(SYNC_DIR_INC ${INCLUDE}/Syncs)
 set(SYNC_BENCH_INC ${INCLUDE}/Benchmarks)
 
 # Test directory structure
-set(TEST_DIR gensync-core/tests)
+set(TEST_DIR tests)
 set(UNIT_TEST_DIR ${TEST_DIR}/unit)
 set(SYSLONG_TEST_DIR ${TEST_DIR}/sys/long)
 set(BENCHMARK_TEST_DIR ${TEST_DIR}/sys/benchmark)
@@ -129,8 +129,8 @@ set(HEADERS
         ${SYNC_BENCH_INC}/RandGen.h
         ${SYNC_BENCH_INC}/FromFileGen.h)
 
-include_directories(gensync-core/include)
-include_directories(gensync-core/tests)
+include_directories(include)
+include_directories(tests)
 
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
@@ -139,27 +139,27 @@ include_directories(${CMAKE_INSTALL_INCLUDEDIR})
 link_directories(${CMAKE_INSTALL_LIBDIR})
 
 # Add libs and executables
-add_library(gensync STATIC ${SOURCE_FILES} ${HEADERS})
-target_include_directories(gensync PRIVATE ${CMAKE_SOURCE_DIR}/gensync-core/include)
-TARGET_LINK_LIBRARIES(gensync ntl cppunit pthread gmp)
+add_library(cpisync STATIC ${SOURCE_FILES} ${HEADERS})
+target_include_directories(cpisync PRIVATE ${CMAKE_SOURCE_DIR}/include)
+TARGET_LINK_LIBRARIES(cpisync ntl cppunit pthread gmp)
 
-install(CODE "FILE(REMOVE_RECURSE ${CMAKE_INSTALL_INCLUDEDIR}/gensync)") #Remove the existing GenSync library data and reinstall
-install(CODE "FILE(REMOVE_RECURSE ${CMAKE_INSTALL_LIBDIR}/libgensync.a)") #Remove the existing GenSync library data and reinstall
-install(TARGETS gensync LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(DIRECTORY DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/GenSync) #create a new folder for GenSync inside of the system include directory
-install(DIRECTORY ${AUX_DIR_INC} ${DATA_DIR_INC} ${COMM_DIR_INC} ${SYNC_DIR_INC} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/GenSync COMPONENT devel) #copy the contents of the include folder into the system include directory
+install(CODE "FILE(REMOVE_RECURSE ${CMAKE_INSTALL_INCLUDEDIR}/cpisync)") #Remove the existing CPISync library data and reinstall
+install(CODE "FILE(REMOVE_RECURSE ${CMAKE_INSTALL_LIBDIR}/libcpisync.a)") #Remove the existing CPISync library data and reinstall
+install(TARGETS cpisync LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(DIRECTORY DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/CPISync) #create a new folder for CPISync inside of the system include directory
+install(DIRECTORY ${AUX_DIR_INC} ${DATA_DIR_INC} ${COMM_DIR_INC} ${SYNC_DIR_INC} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/CPISync COMPONENT devel) #copy the contents of the include folder into the system include directory
 
 # Add the TryMe executable
 add_executable(TryMe ${SRC_DIR}/TryMe.cpp)
-target_link_libraries(TryMe gensync ntl cppunit pthread gmp)
+target_link_libraries(TryMe cpisync ntl cppunit pthread gmp)
 
 # Benchmarks
 add_executable(Benchmarks ${BENCH_DIR}/Runner.cpp)
-target_link_libraries(Benchmarks gensync ntl cppunit pthread gmp)
+target_link_libraries(Benchmarks cpisync ntl cppunit pthread gmp)
 
 # Tools
 add_executable(EncodeJoin ${TOOLS_DIR}/EncodeJoin.cpp)
-target_link_libraries(EncodeJoin gensync ntl pthread gmp)
+target_link_libraries(EncodeJoin cpisync ntl pthread gmp)
 
 # Define a macro for adding executables testing multiple files
 # @param dir The relative path to the folder containing test files to add
@@ -170,7 +170,7 @@ macro(add_group_test dir name)
 
     FOREACH(test ${testPaths})
         GET_FILENAME_COMPONENT(testName ${test} NAME_WE)
-        TARGET_LINK_LIBRARIES(${name} gensync ntl cppunit pthread gmp)
+        TARGET_LINK_LIBRARIES(${name} cpisync ntl cppunit pthread gmp)
         ADD_TEST(${testName} ${name})
     ENDFOREACH(test)
 endmacro()
@@ -187,8 +187,8 @@ set(CPACK_GENERATOR "RPM;DEB")
 set(CPACK_PACKAGE_VERSION ${VERSION})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A library for remote file synchronization research")
 set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/README.md)
-set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/gensync-core/LICENSE)
-set(CPACK_PACKAGE_NAME "GenSync")
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
+set(CPACK_PACKAGE_NAME "CPISync")
 set(CPACK_PACKAGE_VERSION_MAJOR "2")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
 set(CPACK_PACKAGE_VERSION_PATCH "3")
