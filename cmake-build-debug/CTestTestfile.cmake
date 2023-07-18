@@ -1,0 +1,38 @@
+# CMake generated Testfile for 
+# Source directory: /Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking
+# Build directory: /Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/cmake-build-debug
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(AuxiliaryTest "UnitTest")
+set_tests_properties(AuxiliaryTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(CPISyncTest "UnitTest")
+set_tests_properties(CPISyncTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(CommSocketTest "UnitTest")
+set_tests_properties(CommSocketTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(CommStringTest "UnitTest")
+set_tests_properties(CommStringTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(CommunicantTest "UnitTest")
+set_tests_properties(CommunicantTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(Compact2DBitArrayTest "UnitTest")
+set_tests_properties(Compact2DBitArrayTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(CuckooSyncTest "UnitTest")
+set_tests_properties(CuckooSyncTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(CuckooTest "UnitTest")
+set_tests_properties(CuckooTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(DataObjectTest "UnitTest")
+set_tests_properties(DataObjectTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(DataPriorityObjectTest "UnitTest")
+set_tests_properties(DataPriorityObjectTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(FullSyncTest "UnitTest")
+set_tests_properties(FullSyncTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(IBLTSetOfSetsTest "UnitTest")
+set_tests_properties(IBLTSetOfSetsTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(IBLTSyncTest "UnitTest")
+set_tests_properties(IBLTSyncTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(IBLTTest "UnitTest")
+set_tests_properties(IBLTTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;179;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(GenericSyncTests "SystemLongTest")
+set_tests_properties(GenericSyncTests PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;181;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
+add_test(BenchmarkTest "Benchmark")
+set_tests_properties(BenchmarkTest PROPERTIES  _BACKTRACE_TRIPLES "/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;174;ADD_TEST;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;183;add_group_test;/Users/chenxy/Desktop/gensync-benchmark/gensync-benchmarking/CMakeLists.txt;0;")
