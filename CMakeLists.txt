@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 # that can be used to reproduce exact sync behavior afterwards
 add_definitions(-DRECORD=".gensync")
 
-include(CTest)
 include(GNUInstallDirs)
 
 # include Apache Data Sketches as a header-only library
@@ -32,15 +31,6 @@ set(DATA_DIR_INC ${INCLUDE}/Data)
 set(COMM_DIR_INC ${INCLUDE}/Communicants)
 set(SYNC_DIR_INC ${INCLUDE}/Syncs)
 set(SYNC_BENCH_INC ${INCLUDE}/Benchmarks)
-
-# Test directory structure
-set(TEST_DIR gensync-core/tests)
-set(UNIT_TEST_DIR ${TEST_DIR}/unit)
-set(SYSLONG_TEST_DIR ${TEST_DIR}/sys/long)
-set(BENCHMARK_TEST_DIR ${TEST_DIR}/sys/benchmark)
-
-# Set location of the test runner
-set(TEST_RUNNER ${TEST_DIR}/testRunner.cpp)
 
 # Set file config
 set(SOURCE_FILES
@@ -130,11 +120,10 @@ set(HEADERS
         ${SYNC_BENCH_INC}/FromFileGen.h)
 
 include_directories(gensync-core/include)
-include_directories(gensync-core/tests)
 
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-link_directories(/usr/local/lib64)
+include_directories(/opt/local/include)
+link_directories(/opt/local/lib)
+link_directories(/opt/local/lib64)
 include_directories(${CMAKE_INSTALL_INCLUDEDIR})
 link_directories(${CMAKE_INSTALL_LIBDIR})
 
@@ -160,27 +149,6 @@ target_link_libraries(Benchmarks gensync ntl cppunit pthread gmp)
 # Tools
 add_executable(EncodeJoin ${TOOLS_DIR}/EncodeJoin.cpp)
 target_link_libraries(EncodeJoin gensync ntl pthread gmp)
-
-# Define a macro for adding executables testing multiple files
-# @param dir The relative path to the folder containing test files to add
-# @param name The executable name
-macro(add_group_test dir name)
-    FILE(GLOB testPaths ${dir}/*Test.cpp ${dir}/*Tests.cpp)
-    ADD_EXECUTABLE(${name} ${TEST_RUNNER} ${testPaths})
-
-    FOREACH(test ${testPaths})
-        GET_FILENAME_COMPONENT(testName ${test} NAME_WE)
-        TARGET_LINK_LIBRARIES(${name} gensync ntl cppunit pthread gmp)
-        ADD_TEST(${testName} ${name})
-    ENDFOREACH(test)
-endmacro()
-
-# Add test groups (note: executable will throw errors if there are no tests in the respective folder)
-add_group_test(${UNIT_TEST_DIR} UnitTest)
-#add_group_test(${SYSSHORT_TEST_DIR} SystemShortTests)
-add_group_test(${SYSLONG_TEST_DIR} SystemLongTest)
-#add_group_test(${SYSSHORT_TEST_DIR} SystemShortTests)
-add_group_test(${BENCHMARK_TEST_DIR} Benchmark)
 
 #Packaging
 set(CPACK_GENERATOR "RPM;DEB")
