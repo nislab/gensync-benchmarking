@@ -1,6 +1,6 @@
-# *GenSync*
+# *GenSync-benchmarking*
 
-*GenSync* is a framework for benchmarking and optimizing
+*GenSync-benchmarking* is the extended framework for benchmarking and optimizing
 reconciliation of data. It can be compiled to a shared library and
 integrated into other applications, or can be built as a standalone
 application and used to benchmark the implemented algorithms under a
@@ -405,16 +405,13 @@ protocols:
     Filters." International Conference on Wireless Algorithms,
     Systems, and Applications. Springer, Cham, 2020.
 
-For more implementation details as well as the full list of the CPI
-variants that we have implement see [doc/README.md](doc/README.md).
-
 <a name="usage"></a>
 ## Usage
 As we mentioned before, *GenSync* has two modes of operation; 1) as a
 library for integration into higher-level applications, and 2) the
 benchmarking mode. The list of the set reconciliation protocols that
 we support is the same in both cases. For the usage as a library refer
-to [`use-instructions`](/doc#use-instructions). For the benchmarking
+to [`gensync-lib-linux`](https://github.com/nislab/gensync-lib-linux/blob/master/README.md). For the benchmarking
 purposes, please see [*Runner*](#concepts_Runner),
 [`mininet_exec`](#concepts_mininet_exec), and
 [`run_experiments`](#concepts_run_experiments).
@@ -488,5 +485,3 @@ General Public License v3.0 (GPL-3.0).
 - Novak Boskov ([boskov@bu.edu](mailto:boskov@bu.edu))
 - Ari Trachtenberg ([trachten@bu.edu](mailto:trachten@bu.edu))
 - David Starobinski ([staro@bu.edu](mailto:staro@bu.edu))
-
-[^1]: A version of *CPISync* is also maintained [here](https://github.com/trachten/cpisync). Although we are actively working to integrate the two projects, *CPISync* currently does *not* include the *GenSync* benchmarking infrastructure and abstractions improvements that are contained in this repository. Our final goal is to merge the two projects into one.
