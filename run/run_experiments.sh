@@ -52,7 +52,7 @@ cpu_client=100
 mininet_path=../mininet_exec/mininet_exec.py
 cpisync_path=..
 # When on remote, python_path is a path on remote
-python_path=/home/novak/.virtualenvs/statistics/bin/python
+python_path=/usr/bin/python
 ################################ PARAMETERS END ################################
 
 help() {
@@ -477,21 +477,21 @@ for p_file in $params_dir/*.cpisync; do
 
         # All the observations in .cpisync are after chunk_size added elements
         if [[ $chunk_size ]]; then
-            if [[ -d .cpisync ]]; then
-                mv .cpisync .cpisync_rep_${i}_chunks_${chunk_size}_${id}
+            if [[ -d .gensync ]]; then
+                mv .gensync .gensync_rep_${i}_chunks_${chunk_size}_${id}
             else
-                echo "run_experiments.sh: ERROR: No .cpisync after iteration $i. See .mnlog"
+                echo "run_experiments.sh: ERROR: No .gensync after iteration $i. See .mnlog"
                 exit 1
             fi
         fi
     done
 
     # post processing
-    if [[ -d .cpisync ]]; then
-        mv .cpisync .cpisync_$id
+    if [[ -d .gensync ]]; then
+        mv .gensync .gensync$id
     elif ! [[ $chunk_size ]]; then
         # .cpisync is not there because it's already renamed above
-        echo "run_experiments.sh: ERROR: No .cpisync directory, something went wrong. See .mnlog"
+        echo "run_experiments.sh: ERROR: No .gensync directory, something went wrong. See .mnlog"
         exit 1
     fi
 done
