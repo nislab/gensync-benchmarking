@@ -25,8 +25,8 @@ repeat=100
 # chunk_size=100
 
 # Define either server and client files...
-# server_params_file=
-# client_params_file=
+server_params_file=../example/example_params_dir/server_bf_0_0.cpisync
+client_params_file=../example/example_params_dir/client_bf_0_0.cpisync
 
 # ... or the directory where to find the data sets, and a .cpisync header
 # If params_header contains SET_OPTIMAL, the script tries to do so.
@@ -120,7 +120,7 @@ calc_set_optimal_subs() {
     sync_prot="$(get_prot_from_header_string)"
 
     case $sync_prot in
-        1 | 8) # CPISync or IBLTSync
+        1 | 8 | 13) # CPISync or IBLTSync or BloomFilterSync
             read -a common_ret <<< "$(call_common_el $2)"
             optimal=$((${common_ret[1]} + ${common_ret[2]} + 1)) # plus 1!
             header_text="$(echo -e "$1" | sed "s/SET_OPTIMAL/$optimal/g")"
