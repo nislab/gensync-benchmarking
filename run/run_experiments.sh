@@ -25,8 +25,8 @@ repeat=100
 # chunk_size=100
 
 # Define either server and client files...
-server_params_file=../example/example_params_dir/server_bf_0_0.cpisync
-client_params_file=../example/example_params_dir/client_bf_0_0.cpisync
+server_params_file=../example/example_params_dir/server_met_0_0.cpisync
+client_params_file=../example/example_params_dir/client_met_0_0.cpisync
 
 # ... or the directory where to find the data sets, and a .cpisync header
 # If params_header contains SET_OPTIMAL, the script tries to do so.
