@@ -120,7 +120,7 @@ calc_set_optimal_subs() {
     sync_prot="$(get_prot_from_header_string)"
 
     case $sync_prot in
-        1 | 8 | 13) # CPISync or IBLTSync or BloomFilterSync
+        1 | 8 | 13 | 14) # CPISync or IBLTSync or BloomFilterSync or MET_IBLTSync
             read -a common_ret <<< "$(call_common_el $2)"
             optimal=$((${common_ret[1]} + ${common_ret[2]} + 1)) # plus 1!
             header_text="$(echo -e "$1" | sed "s/SET_OPTIMAL/$optimal/g")"
