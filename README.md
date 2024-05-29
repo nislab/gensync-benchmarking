@@ -431,8 +431,8 @@ If you use Debian, or a derivative such as Ubuntu, you can install all
 dependencies using:
 
 ``` shell
-$ apt-install -y libntl-dev libgmp3-dev  # NTL and GNU GMP dependencies
-$ apt-install -y build-essential cmake libcppunit-dev  # for building and testing
+$ apt-get install -y libntl-dev libgmp3-dev  # NTL and GNU GMP dependencies
+$ apt-get install -y build-essential cmake libcppunit-dev  # for building and testing
 ```
 
 To compile *GenSync* use:
