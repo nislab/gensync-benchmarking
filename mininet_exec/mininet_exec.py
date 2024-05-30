@@ -155,6 +155,8 @@ def main(pargs):
 
     # topology initialization
     net.start()
+    s1 = net.get('s1')
+    s1.cmd('ovs-ofctl add-flow s1 action=normal')
 
     srvr, cli = net.getNodeByName(SERVER_HOST_NAME, CLIENT_HOST_NAME)
     # verify latency and bandwidth
