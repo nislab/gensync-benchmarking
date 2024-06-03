@@ -15,7 +15,7 @@ import sys
 import os
 import pandas as pd
 
-OBSERV_SUFFIX = '_observ.gensync'
+OBSERV_SUFFIX = '_observ.cpisync'
 # The order MUST to match the order of lines the measurements appear in
 # _observ.gensync files. Except for 'server', 'client', and 'cardinality'.
 COLUMNS = ['server', 'client', 'cardinality', 'success',
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     experiment_runs = []
     for node in os.listdir(experiments_root_dir):
         if os.path.isdir(os.path.join(experiments_root_dir, node)) \
-           and node.startswith('.gensync_'):
+           and node.startswith('.gensync'):
             experiment_runs.append(node)
 
     experiment_df = pd.DataFrame(columns=COLUMNS)
