@@ -1,0 +1,7 @@
+Sync protocol (as in GenSync.h): 13
+expected: 20200
+eltSize: 12
+falsePosProb: 0.01
+Sketches: {cardinality: 19999, unique(HyperLogLog): 20029.4, heavyHitters: 0}
+--------------------------------------------------------------------------------
+Reference: CommSocket_1718638094767199106_params_data.cpisync

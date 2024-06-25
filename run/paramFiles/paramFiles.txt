@@ -1,0 +1,4 @@
+server_13_10000_0.cpisync client_13_10000_0.cpisync set13-10000-0
+server_13_20000_100.cpisync client_13_20000_100.cpisync set13-20000-100
+server_13_10000_0.cpisync client_13_10000_0.cpisync set13-10000-0
+

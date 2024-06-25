@@ -15,22 +15,23 @@ import sys
 import os
 import pandas as pd
 
-OBSERV_SUFFIX = '_observ.gensync'
+OBSERV_SUFFIX = '_observ.cpisync'
 # The order MUST to match the order of lines the measurements appear in
 # _observ.gensync files. Except for 'server', 'client', and 'cardinality'.
 COLUMNS = ['server', 'client', 'cardinality', 'success',
            'bytes transmitted', 'bytes received',
            'communication time(s)', 'idle time(s)', 'computation time(s)']
 
+
 if __name__ == '__main__':
     experiments_root_dir = os.path.normpath(sys.argv[1])
-
+    
     # a run is a sync execution on a pair of server-client files
     experiment_runs = []
     for node in os.listdir(experiments_root_dir):
         if os.path.isdir(os.path.join(experiments_root_dir, node)) \
            and node.startswith('.gensync_'):
-            experiment_runs.append(node)
+             experiment_runs.append(node)
 
     experiment_df = pd.DataFrame(columns=COLUMNS)
     for run in experiment_runs:
@@ -41,7 +42,7 @@ if __name__ == '__main__':
             if not observ.endswith(OBSERV_SUFFIX):
                 continue
 
-            f_name_parts_count = len(run.split('_'))
+            f_name_parts_count = len(observ.split('_'))
             if (f_name_parts_count == 3):
                 server, client = run.split('_')[-2:]
                 cardinality = ''

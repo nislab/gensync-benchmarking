@@ -1,0 +1,6 @@
+13
+expected: 20100
+eltSize: 12
+falsePosProb: 0.01
+10000 0
+20000 100

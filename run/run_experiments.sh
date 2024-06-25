@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -x
 #
 # Author: Novak Boškov <boskov@bu.edu>
 # Date: Jan, 2021.
@@ -15,7 +15,7 @@ set -e
 
 ############################### PARAMETERS BEGIN ###############################
 # How many times to repeat the same experiment
-repeat=100
+repeat=5
 
 # When we do incremental reconciliation, reconciliation is invoked
 # after this much elelmenta insertions (on both server and client
@@ -25,12 +25,12 @@ repeat=100
 # chunk_size=100
 
 # Define either server and client files...
-server_params_file=../example/example_params_dir/server_met_0_0.cpisync
-client_params_file=../example/example_params_dir/client_met_0_0.cpisync
+server_params_file=paramFiles/$SERVER_FILENAME
+client_params_file=paramFiles/$CLIENT_FILENAME
 
 # ... or the directory where to find the data sets, and a .cpisync header
 # If params_header contains SET_OPTIMAL, the script tries to do so.
-params_dir=../example/example_params_dir
+params_dir=paramFiles
 
 params_header="Sync protocol (as in GenSync.h): 1
 m_bar: SET_OPTIMAL
@@ -42,17 +42,17 @@ Sketches:
 --------------------------------------------------------------------------------"
 
 # Network parameters
-latency=10
-bandwidth="12/60"
-packet_loss=0.001
+latency=20
+bandwidth="10/25"
+packet_loss=0.01
 cpu_server=100
-cpu_client=100
+cpu_client=20
 
 # Where to obtain needed executables
 mininet_path=../mininet_exec/mininet_exec.py
 cpisync_path=..
 # When on remote, python_path is a path on remote
-python_path=/usr/bin/python
+python_path=/usr/bin/python3
 ################################ PARAMETERS END ################################
 
 help() {
@@ -91,6 +91,30 @@ EOF
 }
 
 ############################### FUNCTIONS BEGIN ################################
+
+get_filenames(){
+    address_and_path=(${remote_path//:/ })
+    address=${address_and_path[0]}
+    oldpath=${address_and_path[1]}
+    newpath="${oldpath%/*}"
+    ssh $address
+    #mkdir -p $path
+    #cd $remote_path
+
+    rsync -a --info=progress2 \
+          paramFiles $remote_path
+    read -r line < server_client_names.txt
+    export SERVER_FILENAME=$(echo $line | cut -d ' ' -f 1)
+    export CLIENT_FILENAME=$(echo $line | cut -d ' ' -f 2)
+    csv_file_name=$(echo $line | cut -d ' ' -f 3)
+
+    export server_params_file="paramFiles/$SERVER_FILENAME"
+    export client_params_file="paramFiles/$CLIENT_FILENAME"
+
+    export path="${newpath}/${csv_file_name}"
+
+}
+
 
 call_common_el() {
     echo "$(./count_common.py $1 -- "--------")"
@@ -238,7 +262,11 @@ push_and_run() {
     address=${address_and_path[0]}
     path=${address_and_path[1]}
 
+    get_filenames
+    remote_path=$path
     ssh $address mkdir -p $path
+
+    #ssh $address
 
     # Put CPISync source code on remote
     rsync -a --info=progress2   \
@@ -255,7 +283,6 @@ push_and_run() {
           count_common.py $remote_path/count_common.py
     rsync -a --info=progress2 \
           extract_data.py $remote_path/extract_data.py
-
     if [[ $server_params_file && $client_params_file ]]; then
         rsync -a --info=progress2 \
               $server_params_file $remote_path/$(basename $server_params_file)
@@ -267,19 +294,17 @@ push_and_run() {
     fi
     rsync -a --info=progress2 \
           $(basename $0) $remote_path/$(basename $0)
-
     # Build CPISync on remote
-    ssh $address "cd $path/$(basename $cpisync_path)
-                  mkdir build && cd build
-                  cmake -GNinja . ../
-                  ninja"
-
+    #ssh $address "cd $path/$(basename $cpisync_path)
+    #              mkdir build && cd build
+     #             cmake -GNinja . ../
+      #            ninja"
     if ! [[ $prepare_only ]]; then
         ssh -t $address "cd $path
                          timestamp=\$(date +%s)
-                         sudo nohup ./$(basename $0) -q > nohup_\$timestamp.out &
+                         sudo nohup ./$(basename $0) -q $server_params_file > nohup_\$timestamp.out &
                          echo \"~~~~~~~~> nohup.out:\"
-                         tail -f -n 1 nohup_\$timestamp.out"
+    			 tail -f -n 1 nohup_\$timestamp.out"
     fi
 }
 
@@ -290,6 +315,16 @@ when_on_remote() {
     else
         params_dir=$(basename $params_dir)
     fi
+
+    export server_params_file=$OPTARG
+    
+    #find the client params file from the server params
+    part1=$(echo "$server_params_file" | sed 's/\(.*server\).*/\1/')
+    part2=$(echo "$server_params_file" | sed 's/.*server\(.*\)/\1/')
+    part1=${part1/server/client}
+
+    export client_params_file="${part1}${part2}"
+    
     mininet_path=$(basename $mininet_path)
     benchmarks_path=./$(basename $cpisync_path)/build/Benchmarks
 }
@@ -359,14 +394,13 @@ pull_csv() {
 
 ################################ FUNCTIONS END #################################
 
-while getopts "hqsifr:p:" option; do
+while getopts "hq:sifr:p:" option; do
     case $option in
         s) prepare_only=yes
            ;;
         r) remote_path=$OPTARG
            ;;
         p) pull_csv $OPTARG
-           exit
            ;;
         pp) pull_from_remote $OPTARG
             exit
@@ -388,15 +422,15 @@ if [ $remote_path ]; then
     if [[ $params_dir && $params_header ]]; then
         prepend_params "$params_dir" "$params_header"
     fi
-
     push_and_run
     exit
 fi
 
+
+
 if ! [[ $we_are_on_remote ]]; then
     # When we are on remote, it is set appropriately in when_on_remote
     benchmarks_path=$cpisync_path/build/Benchmarks
-
     # Parameters that do not make sense
     if ! [[ ($server_params_file && $client_params_file) \
                 || ($params_dir && $params_header) ]]
@@ -415,7 +449,6 @@ if ! [[ -f $python_path ]]; then
     echo "Python path does not exist: $python_path"
     exit 1
 fi
-
 # Prepare .cpisync param files if only the raw params_dir data is passed
 # Always done locally
 if [[ $params_dir && $params_header ]] \
@@ -425,8 +458,9 @@ then
 fi
 
 # reset log directories
-rm -rf '.cpisync'
+rm -rf '.gensync'
 sudo rm -rf '.mnlog'
+
 
 if [[ $server_params_file && $client_params_file ]]; then
     print_common_el $server_params_file
@@ -440,7 +474,7 @@ if [[ $server_params_file && $client_params_file ]]; then
     done
 
     echo "Completed $repeat mininet_exec calls!"
-    exit                        # finish here!
+    exit  # finish here!
 fi
 
 # Otherwise, we're loading data from a params_dir
@@ -488,7 +522,7 @@ for p_file in $params_dir/*.cpisync; do
 
     # post processing
     if [[ -d .gensync ]]; then
-        mv .gensync .gensync$id
+        mv .gensync .gensync_$id
     elif ! [[ $chunk_size ]]; then
         # .cpisync is not there because it's already renamed above
         echo "run_experiments.sh: ERROR: No .gensync directory, something went wrong. See .mnlog"

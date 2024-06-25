@@ -1,0 +1,15 @@
+Sync protocol (as in GenSync.h): 13
+expected: 10100
+eltSize: 12
+falsePosProb: 0.01
+Sketches: {cardinality: 9999, unique(HyperLogLog): 9997.2, heavyHitters: 0}
+--------------------------------------------------------------------------------
+Success: 1 []
+Stats for BloomFilterSync:   Expected number of elements = 10100   Size of values = 12   Probability of false positives = 0.01
+
+Bytes Transmitted: 12113
+Bytes Received: 12113
+Communication Time(s): 2.03581
+Idle Time(s): 1.69034
+Computation Time(s): 0.128945
+
