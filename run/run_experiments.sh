@@ -263,7 +263,7 @@ push_and_run() {
     path=${address_and_path[1]}
 
     get_filenames
-    remote_path=$path
+    remote_path="$address:$path"
     ssh $address mkdir -p $path
 
     #ssh $address
@@ -294,6 +294,14 @@ push_and_run() {
     fi
     rsync -a --info=progress2 \
           $(basename $0) $remote_path/$(basename $0)
+    ssh $address "cd $path/$(basename $cpisync_path)
+                  if [ ! -d build ]; then
+                      mkdir build && cd build
+                      cmake -GNinja . ../
+                      ninja
+                  fi
+                  "
+
     # Build CPISync on remote
     #ssh $address "cd $path/$(basename $cpisync_path)
     #              mkdir build && cd build
@@ -304,7 +312,7 @@ push_and_run() {
                          timestamp=\$(date +%s)
                          sudo nohup ./$(basename $0) -q $server_params_file > nohup_\$timestamp.out &
                          echo \"~~~~~~~~> nohup.out:\"
-    			 tail -f -n 1 nohup_\$timestamp.out"
+                         tail -f -n 1 nohup_\$timestamp.out"
     fi
 }
 
@@ -401,6 +409,7 @@ while getopts "hq:sifr:p:" option; do
         r) remote_path=$OPTARG
            ;;
         p) pull_csv $OPTARG
+           exit
            ;;
         pp) pull_from_remote $OPTARG
             exit
