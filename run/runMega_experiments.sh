@@ -1,5 +1,4 @@
-#!/bin/bash -x
-
+#!/bin/bash
 
 # Check if the correct number of arguments are provided
 if [ "$#" -ne 1 ]; then
@@ -15,13 +14,14 @@ if [ ! -f "$paramFile" ]; then
   exit 1
 fi
 
-# Read the file line by line
-#while IFS= read -r line
-while IFS= read -r line || [[ -n "$line" ]]; do
-  (
+
+mapfile -t lines < "$paramFile"
+
+for line in "${lines[@]}"; do
+(
   echo $line
   read -r serverFile clientFile csvFileName <<< "$line"
-   
+
   # Print the variables for debugging purposes and set as enviornment variables
   echo "Server File: $serverFile"
   echo "Client File: $clientFile"
@@ -36,9 +36,9 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   echo "Running run_experiments.sh"
   ./run_experiments.sh -r "128.197.128.230:/home/nathanstrahs/EXPERIMENTS/MEGA-EXPERIMENTS/$CSV_FILENAME" &
   first_script_pid=$!
-  
-  # Set a timeout for 1 minutes (60 seconds)
-  timeout=60
+
+  # Set a timeout in seconds
+  timeout=700
   while [ $timeout -gt 0 ]; do
     sleep 1
     if ! ps -p $first_script_pid > /dev/null; then
@@ -46,21 +46,20 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
     timeout=$((timeout-1))
   done
-  
+
   if ps -p $first_script_pid > /dev/null; then
     # If the first script is still running after timeout, kill it
     echo "First script timed out, killing it..."
     kill $first_script_pid
     wait $first_script_pid 2>/dev/null
   fi
-  
-  ./run_experiments.sh -p "128.197.128.230:/home/nathanstrahs/EXPERIMENTS/MEGA-EXPERIMENTS/$CSV_FILENAME" &
-  second_script_pid=$!
-  wait $second_script_pid
-  
+
+  ./run_experiments.sh -p "128.197.128.230:/home/nathanstrahs/EXPERIMENTS/MEGA-EXPERIMENTS/$CSV_FILENAME"
+  sleep 2
 
   rm $OUTPUT_FILE
-  echo "Pulled the CSV"
+  echo "Pulled the CSV, moving to next rendition"
   )
 done < "$paramFile"
 
+                                                                                                    62,3          All
