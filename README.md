@@ -158,12 +158,20 @@ epsilon: <INT>
 partitions/pFactor(for InterCPISync): <INT>
 hashes: <true|false>
 ```
+m_bar: This is the maximum degree of the polynomial being used in the interpolation. It is analogous to the differences between the sets.
+bits: Refers to the bit length used for encoding the coefficients of the polynomial.
+epsilon: This is the tolerance parameter that represents an error margin that is acceptable in the sync.
+partitions/pFactor: This determines the number of partitions to split the data into during the sync.
+hashes: Indicates whether to use hashing during the synchronization.
 - IBLT
 ```
 expected: <INT>
 eltSize: <INT>
 numElemChild: <INT>
 ```
+expected: Represents the expected number of elements to determine the IBLT size.
+eltSize: This is the number of bytes of a single data element.
+numElemChild: Represents the number of elements that a child node in the IBLT has.
 - Cuckoo
 ```
 fngprtSize: <INT>
