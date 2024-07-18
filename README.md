@@ -157,6 +157,16 @@ bucketSize: <INT>
 filterSize: <INT>
 maxKicks: <INT>
 ```
+- Bloom Filter
+```
+expected: <INT>
+eltSize: <INT>
+falsePosProb: <DOUBLE between 0 and 1>
+```
+- MET IBLT
+```
+eltSize: <INT>
+```
 
 When we create multiple parameter files with the same data points,
 *GenSync* automatically detects that and uses file path references to
