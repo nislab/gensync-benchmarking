@@ -149,8 +149,9 @@ Each Sync Protocol has an integer to identify it. The list of integers is as fol
 12. CuckooSync
 13. BloomFilterSync
 14. MET_IBLTSync
-Each Protocol has unique set of parameters. 
-- CPI
+Each Protocol has a unique set of parameters.
+ 
+CPI
 ```
 m_bar: <INT>
 bits: <INT>
@@ -158,34 +159,35 @@ epsilon: <INT>
 partitions/pFactor(for InterCPISync): <INT>
 hashes: <true|false>
 ```
-m_bar: This is the maximum degree of the polynomial being used in the interpolation. It is analogous to the differences between the sets.
-bits: Refers to the bit length used for encoding the coefficients of the polynomial.
-epsilon: This is the tolerance parameter that represents an error margin that is acceptable in the sync.
-partitions/pFactor: This determines the number of partitions to split the data into during the sync.
-hashes: Indicates whether to use hashing during the synchronization.
-- IBLT
+- m_bar: This is the maximum degree of the polynomial being used in the interpolation. It is analogous to the differences between the sets.
+- bits: Refers to the bit length used for encoding the coefficients of the polynomial.
+- epsilon: This is the tolerance parameter that represents an error margin that is acceptable in the sync.
+- partitions/pFactor: This determines the number of partitions to split the data into during the sync.
+- hashes: Indicates whether to use hashing during the synchronization.
+
+IBLT
 ```
 expected: <INT>
 eltSize: <INT>
 numElemChild: <INT>
 ```
-expected: Represents the expected number of elements to determine the IBLT size.
-eltSize: This is the number of bytes of a single data element.
-numElemChild: Represents the number of elements that a child node in the IBLT has.
-- Cuckoo
+- expected: Represents the expected number of elements to determine the IBLT size.
+- eltSize: This is the number of bytes of a single data element.
+- numElemChild: Represents the number of elements that a child node in the IBLT has.
+Cuckoo
 ```
 fngprtSize: <INT>
 bucketSize: <INT>
 filterSize: <INT>
 maxKicks: <INT>
 ```
-- Bloom Filter
+Bloom Filter
 ```
 expected: <INT>
 eltSize: <INT>
 falsePosProb: <DOUBLE between 0 and 1>
 ```
-- MET IBLT
+MET IBLT
 ```
 eltSize: <INT>
 ```
