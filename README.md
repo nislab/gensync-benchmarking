@@ -174,6 +174,7 @@ numElemChild: <INT>
 - expected: Represents the expected number of elements to determine the IBLT size.
 - eltSize: This is the number of bytes of a single data element.
 - numElemChild: Represents the number of elements that a child node in the IBLT has.
+
 Cuckoo
 ```
 fngprtSize: <INT>
@@ -181,16 +182,26 @@ bucketSize: <INT>
 filterSize: <INT>
 maxKicks: <INT>
 ```
+- fngprtSize: Size of the fingerprint used to represent an element in the filter. Smaller fingerprints save space but tend to increase the false positive rate.
+- bucketSize: This is the number of entries per bucket.
+- filterSize: This is the total number of buckets in the filter. Usually 2x to 4x the size of the number of total elements.
+- maxKicks: This is the maximum number of times an element can be kicked from its table before the filter declares it full.
+  
 Bloom Filter
 ```
 expected: <INT>
 eltSize: <INT>
 falsePosProb: <DOUBLE between 0 and 1>
 ```
+- expected: Total number of expected elements.
+- eltSize: This is the size of each data element in bytes.
+- falsePosProb: This is the target false probability rate that the filter will have.
+  
 MET IBLT
 ```
 eltSize: <INT>
 ```
+- eltSize: This is the size of each data element in bytes.
 
 When we create multiple parameter files with the same data points,
 *GenSync* automatically detects that and uses file path references to
