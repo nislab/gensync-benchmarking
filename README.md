@@ -149,6 +149,7 @@ Each Sync Protocol has an integer to identify it. The list of integers is as fol
 12. CuckooSync
 13. BloomFilterSync
 14. MET_IBLTSync
+    
 Each Protocol has a unique set of parameters.
  
 CPI
