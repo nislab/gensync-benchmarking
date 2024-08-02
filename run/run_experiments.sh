@@ -271,7 +271,7 @@ push_and_run() {
     # Build CPISync on remote
     ssh $address "cd $path/$(basename $cpisync_path)
                   if [ ! -d build ]; then
-                      mkdir build && cd build
+                      mkdir -p build && cd build
                       cmake -GNinja . ../
                       ninja
                   fi
