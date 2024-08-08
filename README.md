@@ -410,6 +410,20 @@ For this to work, your remote testbed machine must satisfy all the
 [`rsync`](https://man7.org/linux/man-pages/man1/rsync.1.html)
 (alongside standard Linux user tools).
 
+<a name="Mega Testing"></a>
+## Mega Testing
+*GenSync* also supports running a large number of experiments using the `runMega_experiments` file. To perform these experiments, the user must also utilize the `megaSetCreator` python program. This program will, given the necessary parameters, create sync files to be passed to `runMega_experiments`. It will output a text file, `paramFiles`, that includes all the file names to be passed to the `runMega_experiments`. 
+
+After creating all the necessary param files for the syncs, simply execute:
+```
+$ ./runMega_experiments.sh PARAM_PATH/paramFiles.txt
+```
+Troubleshooting: 
+
+The user may need to allow sudo permissions to the 'rm' command on the remote. `run_experiments` uses this to run the experiments, so enabling these permissions is essential for automation. 
+
+The user may also need to configure passwordless ssh between the current machine and the remote. If the user chooses not to do this, then they will be prompted for a password every iteration of the `run_experiments`, creating a bottle neck in the automation. 
+
 <a name="algorithms"></a>
 ## Included Algorithms
 
