@@ -134,9 +134,11 @@ Sketches:
 --------------------------------------------------------------------------------
 <BASE64_ENCODED_DATA_POINTS|REFERENCE_TO_OTHER_DATA_FILE>
 ```
-
-Each Protocol has unique set of parameters. For example:
-- CPI
+## Each sync protocol has an integer to identify it in GenSync.h.
+    
+Each Protocol has a unique set of parameters.
+ 
+CPI
 ```
 m_bar: <INT>
 bits: <INT>
@@ -144,19 +146,49 @@ epsilon: <INT>
 partitions/pFactor(for InterCPISync): <INT>
 hashes: <true|false>
 ```
-- IBLT
+- m_bar: This is the upper bound on the number of differences in the sets. 
+- bits: Refers to the bit length used for encoding the evaluations of the characteristic polynomial. In other words, it is the size, in bits, used to represent an element.
+- epsilon: An upper bound on the probability of error of the synchronization, expressed in its negative log.  In other words, the actual probability of error is upper bounded by 2^-epsilon.
+- partitions/pFactor: This determines the number of partitions to split the data into during the sync.
+- hashes: Indicates whether to use hashing during the synchronization.
+
+IBLT
 ```
 expected: <INT>
 eltSize: <INT>
 numElemChild: <INT>
 ```
-- Cuckoo
+- expected: Represents the expected number of elements to be synced. If this parameter is too small, the sync may fail. If it is too large, the sync may be inefficient. The optimal size of the IBLT will be calculated from this value. 
+- eltSize: This is the number of bytes of a single data element.
+- numElemChild: Represents the number of elements that a child node in the IBLT has. Larger values lead to a lower probability of collision, but they increase the computation cost.
+
+Cuckoo
 ```
 fngprtSize: <INT>
 bucketSize: <INT>
 filterSize: <INT>
 maxKicks: <INT>
 ```
+- fngprtSize: Size of the fingerprint used to represent an element in the filter. Smaller fingerprints save space but tend to increase the false positive rate.
+- bucketSize: This is the number of entries per bucket. Larger bucket sizes increase the memory cost of the filter but lower the collision rate. Smaller bucket sizes use less memory but are faster with lookup times. 
+- filterSize: This is the total number of buckets in the filter. Usually 2x to 4x the size of the number of total elements.
+- maxKicks: This is the maximum number of times an element can be kicked from its table before the filter declares it full. 
+  
+Bloom Filter
+```
+expected: <INT>
+eltSize: <INT>
+falsePosProb: <DOUBLE between 0 and 1>
+```
+- expected: Represents the expected number of elements to be synced. If this parameter is too small, the sync may fail. If it is too large, the sync may be inefficient. The optimal size of the Bloom Filter will be calculated from this value. 
+- eltSize: This is the number of bytes of a single data element.
+- falsePosProb: This is the target false probability rate of the filter. Lower false positive rates will increase the computation cost of the filter, and higher false positive rates will decrease the reliability of the filter. A typical value for this is 0.05. 
+  
+MET IBLT
+```
+eltSize: <INT>
+```
+- eltSize: This is the size of each data element in bytes. Everything else will be optimized automatically.
 
 When we create multiple parameter files with the same data points,
 *GenSync* automatically detects that and uses file path references to
@@ -363,6 +395,20 @@ For this to work, your remote testbed machine must satisfy all the
 `run_experiments` dependencies (see above) and you laptop needs
 [`rsync`](https://man7.org/linux/man-pages/man1/rsync.1.html)
 (alongside standard Linux user tools).
+
+<a name="Mega Testing"></a>
+## Mega Testing
+*GenSync* also supports running a large number of experiments using the `runMega_experiments` file. To perform these experiments, the user must also utilize the `megaSetCreator` python program. This program will, given the necessary parameters, create sync files to be passed to `runMega_experiments`. It will output a text file, `paramFiles`, that includes all the file names to be passed to the `runMega_experiments`. 
+
+After creating all the necessary param files for the syncs, simply execute:
+```
+$ ./runMega_experiments.sh PARAM_PATH/paramFiles.txt
+```
+Troubleshooting: 
+
+The user may need to allow sudo permissions to the 'rm' command on the remote. `run_experiments` uses this to run the experiments, so enabling these permissions is essential for automation. 
+
+The user may also need to configure passwordless ssh between the current machine and the remote. If the user chooses not to do this, then they will be prompted for a password every iteration of the `run_experiments`, creating a bottle neck in the automation. 
 
 <a name="algorithms"></a>
 ## Included Algorithms
