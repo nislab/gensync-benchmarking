@@ -134,21 +134,7 @@ Sketches:
 --------------------------------------------------------------------------------
 <BASE64_ENCODED_DATA_POINTS|REFERENCE_TO_OTHER_DATA_FILE>
 ```
-Each Sync Protocol has an integer to identify it. The list of integers can be found in GenSync.h:
-1. CPISync
-2. CPISync_OneLessRound
-3. CPISync_HalfRound
-4. ProbCPISync
-5. InteractiveCPISync
-6. OneWayCPISync
-7. FullSync
-8. IBLTSync
-9. OneWayIBLTSync
-10. IBLTSetOfSets
-11. IBLTSync_Multiset
-12. CuckooSync
-13. BloomFilterSync
-14. MET_IBLTSync
+Each Sync Protocol has an integer to identify it. The list of integers can be found in GenSync.h
     
 Each Protocol has a unique set of parameters.
  
